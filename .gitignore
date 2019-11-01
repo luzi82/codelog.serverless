@@ -1,0 +1,5 @@
+/.project
+.serverless
+node_modules
+venv
+package-lock.json
