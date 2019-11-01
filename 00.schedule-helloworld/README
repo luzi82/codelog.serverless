@@ -1,0 +1,25 @@
+# config, const
+AWS_REGION=us-west-2
+MY_PATH=${PWD}
+
+# install node+npm
+brew install node
+
+# Install the serverless cli
+npm install serverless
+SERVERLESS=${MY_PATH}/node_modules/serverless/bin/serverless
+
+# install configure aws
+python3 -m venv venv
+. venv/bin/activate
+pip install --upgrade pip
+pip install awscli
+aws configure
+
+# deploy
+cd ${MY_PATH}/src
+${SERVERLESS} deploy -r ${AWS_REGION}
+
+# un-deploy
+cd ${MY_PATH}/src
+${SERVERLESS} remove -r ${AWS_REGION}

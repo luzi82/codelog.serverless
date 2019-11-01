@@ -1,0 +1,14 @@
+service: clsl-00-schedule-helloworld
+
+frameworkVersion: ">=1.56.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: python3.7
+  memorySize: 128
+
+functions:
+  main:
+    handler: helloworld.run
+    events:
+      - schedule: rate(1 minute)
