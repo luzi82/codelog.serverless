@@ -1,0 +1,38 @@
+# config, const
+AWS_REGION=us-west-2
+MY_PATH=${PWD}
+
+# install node+npm
+# brew install node # macOS
+# Debian
+# curl -sL https://deb.nodesource.com/setup_12.x | bash -
+# apt-get install -y nodejs
+
+# Install the serverless cli
+cd ${MY_PATH}
+npm install serverless serverless-python-requirements
+SERVERLESS=${MY_PATH}/node_modules/serverless/bin/serverless
+${SERVERLESS} --version
+
+# install configure aws
+cd ${MY_PATH}
+python3 -m venv venv
+. venv/bin/activate
+pip install --upgrade pip
+pip install awscli
+aws configure
+
+# deploy
+cd ${MY_PATH}/src
+${SERVERLESS} deploy -r ${AWS_REGION}
+
+# show log
+cd ${MY_PATH}/src
+${SERVERLESS} logs -f main -r ${AWS_REGION} -t
+
+# un-deploy
+cd ${MY_PATH}/src
+${SERVERLESS} remove -r ${AWS_REGION}
+
+# quit python venv
+deactivate

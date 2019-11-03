@@ -1,0 +1,21 @@
+service: clsl-01-requirements
+
+frameworkVersion: ">=1.56.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: python3.7
+  memorySize: 128
+
+functions:
+  main:
+    handler: clsl_01.main.run
+    events:
+      - schedule: rate(1 minute)
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: false
