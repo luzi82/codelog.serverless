@@ -1,0 +1,23 @@
+service: clsl-03-s3io
+
+frameworkVersion: ">=1.57.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: python3.7
+  memorySize: 128
+  environment:
+    BUCKET_NAME: ${env:BUCKET_NAME}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource:
+        - arn:aws:s3:::${env:BUCKET_NAME}
+        - arn:aws:s3:::${env:BUCKET_NAME}/*
+
+functions:
+  main:
+    handler: main.run
+    events:
+      - schedule: rate(1 minute)

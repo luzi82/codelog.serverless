@@ -1,0 +1,14 @@
+{
+    "Rules": [
+        {
+            "ID": "one day rm",
+            "Filter": {
+              "Prefix": ""
+            },
+            "Status": "Enabled",
+            "Expiration": {
+                "Days": 1
+            }
+        }
+    ]
+}

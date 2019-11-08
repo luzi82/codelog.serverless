@@ -1,0 +1,49 @@
+# config, const
+AWS_REGION=us-west-2
+MY_PATH=${PWD}
+export BUCKET_NAME=codelog-test # change it for good
+
+# install node+npm
+# brew install node # macOS
+# Debian
+# curl -sL https://deb.nodesource.com/setup_12.x | bash -
+# apt-get install -y nodejs
+
+# Install the serverless cli
+npm install serverless
+SERVERLESS=${MY_PATH}/node_modules/serverless/bin/serverless
+${SERVERLESS} --version
+
+# install aws
+python3 -m venv venv
+. venv/bin/activate
+pip install --upgrade pip
+pip install awscli
+
+# config aws
+aws configure
+
+# create s3 bucket
+cd ${MY_PATH}
+aws s3api create-bucket \
+  --acl private \
+  --bucket ${BUCKET_NAME} \
+  --create-bucket-configuration LocationConstraint=${AWS_REGION}
+aws s3api put-bucket-lifecycle-configuration \
+  --bucket ${BUCKET_NAME} \
+  --lifecycle-configuration file://lifecycle-configuration.json
+
+# deploy
+cd ${MY_PATH}/src
+${SERVERLESS} deploy -r ${AWS_REGION}
+
+# show log
+cd ${MY_PATH}/src
+${SERVERLESS} logs -f main -r ${AWS_REGION} -t
+
+# un-deploy
+cd ${MY_PATH}/src
+${SERVERLESS} remove -r ${AWS_REGION}
+
+# quit python venv
+deactivate
