@@ -1,0 +1,27 @@
+service: clsl-gcp-10-requirements
+
+frameworkVersion: ">=1.76.1 <2.0.0"
+
+provider:
+  name: google
+  runtime: python37
+  region: ${env:GCP_REGION}
+  project: ${env:PROJECT_ID}
+  credentials: ${env:GOOGLE_APPLICATION_CREDENTIALS}
+  memorySize: 128
+
+functions:
+  main:
+    handler: gcp_handler
+    events:
+      - http: _ignored_by_serverless_
+
+package:
+  exclude:
+    - ./**
+  include:
+    - main.py
+    - requirements.txt
+
+plugins:
+  - serverless-google-cloudfunctions
