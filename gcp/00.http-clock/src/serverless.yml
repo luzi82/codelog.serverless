@@ -1,0 +1,26 @@
+service: clsl-gcp-00-http-clock
+
+frameworkVersion: ">=1.64.0 <2.0.0"
+
+provider:
+  name: google
+  runtime: python37
+  region: ${env:GCP_REGION}
+  project: ${env:PROJECT_ID}
+  credentials: ${env:GOOGLE_APPLICATION_CREDENTIALS}
+  memorySize: 128
+
+functions:
+  main:
+    handler: clock
+    events:
+      - http: clock
+
+package:
+  exclude:
+    - ./**
+  include:
+    - main.py
+
+plugins:
+  - serverless-google-cloudfunctions
